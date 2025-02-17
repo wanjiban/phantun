@@ -1,9 +1,12 @@
 name: Docker image build and release
 
 on:
+  # 支持手动触发工作流
+  workflow_dispatch:
+  # 当推送标签时也触发工作流
   push:
     tags:
-      - '*'  # 仅在推送标签时触发工作流
+      - '*'
 
 jobs:
   build:
