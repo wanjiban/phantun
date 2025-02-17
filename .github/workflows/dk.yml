@@ -31,7 +31,8 @@ jobs:
           context: .
           file: docker/Dockerfile
           platforms: linux/amd64,linux/arm64
-          outputs: type=docker,dest=/tmp/phantun-images.tar
+          # 修改导出器为 oci
+          outputs: type=oci,dest=/tmp/phantun-images.tar
 
       - name: Split tar file by platform
         run: |
