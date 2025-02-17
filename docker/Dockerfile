@@ -10,6 +10,7 @@ FROM rust:latest AS builder
 COPY . /phantun
 
 RUN cd phantun \
+  && cargo update \
   && cargo build --release \
   && strip target/release/server target/release/client \
   && install target/release/server /usr/local/bin/phantun-server \
