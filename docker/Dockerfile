@@ -12,6 +12,8 @@ COPY . /phantun
 RUN cd phantun \
   && cargo update \
   && cargo build --release \
+  && ls -la target/release \
+  && ls -la /app/ \
   && strip target/release/server target/release/client \
   && install target/release/server /usr/local/bin/phantun-server \
   && install target/release/client /usr/local/bin/phantun-client \
