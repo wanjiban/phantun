@@ -1,12 +1,14 @@
 name: Build Releases
 on:
   workflow_dispatch:
-#  push:
-#    tags:
-#      - v*.*.*
+  push:
+    tags:
+      - v*.*.*
 
 env:
   CARGO_TERM_COLOR: always
+  # 获取当前日期并格式化
+  CURRENT_DATE: ${{ github.event.repository.pushed_at || format('{0:YYYYMMDD}', now()) }}
 
 jobs:
   build-cross:
@@ -49,5 +51,7 @@ jobs:
       - name: Upload Github Assets
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.ref_name }}-${{ env.CURRENT_DATE }}
+          name: Release ${{ github.ref_name }}-${{ env.CURRENT_DATE }}
           files: target/${{ matrix.target }}/release/*.zip
           prerelease: ${{ contains(github.ref, '-') }}
