@@ -22,8 +22,8 @@ RUN cd phantun \
 #
 # Runtime stage
 #
-# FROM debian:latest
-FROM alpine:latest
+FROM debian:latest
+# FROM alpine:latest
 
 COPY --from=builder /usr/local/bin/phantun-server /usr/local/bin/
 COPY --from=builder /usr/local/bin/phantun-client /usr/local/bin/
