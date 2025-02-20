@@ -7,14 +7,13 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  # 获取当前日期并格式化
-  CURRENT_DATE: ${{ github.event.repository.pushed_at || format('{0:YYYYMMDD}', now()) }}
 
 jobs:
   build-cross:
     runs-on: ubuntu-latest
     env:
       RUST_BACKTRACE: full
+      # 先不设置 CURRENT_DATE，在步骤中设置
     strategy:
       matrix:
         target:
@@ -31,6 +30,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Set current date
+        run: echo "CURRENT_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
