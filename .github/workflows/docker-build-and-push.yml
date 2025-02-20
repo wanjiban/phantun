@@ -1,10 +1,11 @@
 name: Docker Build and Push Multi-Arch
 
 on:
+  workflow_dispatch:
   # 可以根据需要调整触发工作流的事件，这里设置为 push 到 main 分支时触发
-  push:
-    branches:
-      - main
+#  push:
+#    branches:
+#      - main
 
 jobs:
   build-and-push:
