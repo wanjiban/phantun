@@ -1,9 +1,9 @@
 name: Docker image build
 
 on:
-  push:
-    paths-ignore:
-      - '**.md'
+#  push:
+#    paths-ignore:
+#      - '**.md'
 
 jobs:
   build:
