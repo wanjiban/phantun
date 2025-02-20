@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main  # 可以根据需要修改为其他分支
+      - main
 
 jobs:
   build-and-push:
@@ -14,10 +14,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Generate cache key
+        id: cache-key
+        run: echo "::set-output name=key::${{ runner.os }}-buildx-${{ github.sha }}"
+
+      - name: Try to restore cache
+        id: cache-restore
+        continue-on-error: true
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ steps.cache-key.outputs.key }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v3
         with:
-          platforms: linux/amd64,linux/arm64  # 增加 arm64 平台
+          platforms: linux/amd64,linux/arm64
 
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -37,5 +51,14 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository_owner }}/phantun:latest
             ghcr.io/${{ github.repository_owner }}/phantun:${{ github.sha }}
-          platforms: linux/amd64,linux/arm64  # 增加 arm64 平台
+          platforms: linux/amd64,linux/arm64
           push: true
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+
+      - name: Save cache
+        if: always()
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ steps.cache-key.outputs.key }}
