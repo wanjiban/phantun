@@ -4,6 +4,7 @@
 
 ```sh
 docker build -t phantun -f docker/Dockerfile .
+docker build -t phantun -f docker/Dockerfile .
 ```
 
 ## Usage
